@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roy 私人学院 · 个人终身学习平台</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#F5F4EF; --bg-2:#EDEBE3; --card:#FFFFFF; --border:#E0DED4;
+    --ink:#2C2C2A; --ink-2:#5F5E5A; --ink-3:#888780;
+    --academy:#3C3489; --academy-d:#2A2466; --academy-l:#EEEDFE;
+    --biz:#185FA5; --biz-l:#E6F1FB;
+    --interest:#0F6E56; --interest-l:#E1F5EE;
+    --mkt:#0F6E56; --mkt-l:#E1F5EE;
+    --mao:#9E2B25; --mao-l:#FBEDEB;
+    --done:#5a9e35; --done-l:#EBF5E5;
+    --ongoing:#854F0B; --ongoing-l:#FAEEDA;
+    --radius:16px; --radius-sm:12px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:0 4px 16px rgba(0,0,0,.07),0 2px 6px rgba(0,0,0,.04);
+    --shadow-lg:0 12px 40px rgba(0,0,0,.10),0 4px 12px rgba(0,0,0,.05);
+    --shadow-academy:0 8px 32px rgba(60,52,137,.15),0 2px 8px rgba(60,52,137,.08);
+    --shadow-biz:0 8px 32px rgba(24,95,165,.12),0 2px 8px rgba(24,95,165,.06);
+    --shadow-interest:0 8px 32px rgba(15,110,86,.12),0 2px 8px rgba(15,110,86,.06);
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse 800px 600px at 20% 0%,rgba(60,52,137,.05),transparent 60%),
+      radial-gradient(ellipse 700px 500px at 85% 15%,rgba(24,95,165,.04),transparent 55%),
+      radial-gradient(ellipse 600px 400px at 50% 100%,rgba(15,110,86,.03),transparent 50%);
+    background-attachment:fixed;
+    color:var(--ink); line-height:1.7; font-size:16px;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;
+    background:rgba(245,244,239,.82);backdrop-filter:blur(14px) saturate(1.2);
+    border-bottom:1px solid rgba(224,222,212,.6);
+    box-shadow:0 1px 8px rgba(0,0,0,.04);
+    z-index:50;
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--academy)}
+  .logo .badge{
+    width:32px;height:32px;border-radius:9px;
+    background:linear-gradient(135deg,var(--academy),var(--academy-d));
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:700;
+    box-shadow:0 3px 10px rgba(60,52,137,.3),inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  nav .links{display:flex;gap:24px;font-size:14px;color:var(--ink-2)}
+  nav .links a:hover{color:var(--academy)}
+
+  /* hero */
+  .hero{
+    padding:80px 0 60px;text-align:center;
+    position:relative;
+  }
+  .hero-bg{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:900px;height:320px;
+    background:radial-gradient(ellipse at center,rgba(60,52,137,.07) 0%,transparent 65%);
+    z-index:-1;pointer-events:none;
+  }
+  .hero h1{
+    font-size:44px;font-weight:700;color:var(--academy);
+    letter-spacing:1px;margin-bottom:14px;
+    text-shadow:0 2px 4px rgba(60,52,137,.08);
+  }
+  .hero .sub{font-size:18px;color:var(--ink-2);margin-bottom:8px}
+  .hero .en{font-size:13px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+  .stats{
+    display:flex;justify-content:center;gap:20px;margin-top:48px;flex-wrap:wrap;
+  }
+  .stat{
+    text-align:center;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px 32px;
+    box-shadow:var(--shadow-md);
+    transition:transform .25s,box-shadow .25s;
+    min-width:120px;
+  }
+  .stat:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-lg);
+  }
+  .stat .n{
+    font-size:38px;font-weight:700;color:var(--academy);
+    text-shadow:0 2px 4px rgba(60,52,137,.1);
+  }
+  .stat .l{font-size:13px;color:var(--ink-3);margin-top:4px}
+
+  /* section */
+  section{padding:52px 0}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:8px}
+  .sec-head h2{font-size:26px;font-weight:700;color:var(--ink)}
+  .sec-head .tag{font-size:13px;color:var(--ink-3)}
+
+  /* school card */
+  .school{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:30px;margin-bottom:24px;
+    box-shadow:var(--shadow-md);
+    position:relative;overflow:hidden;
+  }
+  .school::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  }
+  .school.biz::before{background:linear-gradient(90deg,var(--biz),rgba(24,95,165,.3))}
+  .school.interest::before{background:linear-gradient(90deg,var(--interest),rgba(15,110,86,.3))}
+  .school.mao::before{background:linear-gradient(90deg,var(--mao),rgba(158,43,37,.3))}
+  .school.biz{border-left:none}
+  .school.interest{border-left:none}
+  .school.mao{border-left:none}
+  .school-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+  .school-title{display:flex;align-items:center;gap:12px}
+  .school-title .dot{
+    width:12px;height:12px;border-radius:50%;
+    box-shadow:0 0 0 4px rgba(0,0,0,.04);
+  }
+  .school.biz .dot{background:var(--biz);box-shadow:0 0 0 4px rgba(24,95,165,.12)}
+  .school.interest .dot{background:var(--interest);box-shadow:0 0 0 4px rgba(15,110,86,.12)}
+  .school.mao .dot{background:var(--mao);box-shadow:0 0 0 4px rgba(158,43,37,.12)}
+  .school-title h3{font-size:20px;font-weight:700}
+  .school-title .desc{font-size:13px;color:var(--ink-3)}
+  .school-count{
+    font-size:13px;color:var(--ink-2);
+    background:linear-gradient(135deg,var(--bg-2),var(--bg));
+    padding:5px 14px;border-radius:20px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-sm);
+  }
+
+  /* course grid */
+  .courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  .course{
+    background:linear-gradient(180deg,var(--card) 0%,#FDFCFA 100%);
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:22px;
+    transition:all .28s cubic-bezier(.25,.46,.45,.94);
+    position:relative;overflow:hidden;
+    box-shadow:var(--shadow-sm);
+  }
+  .course:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-lg);
+    border-color:rgba(60,52,137,.2);
+  }
+  .course .cover{
+    height:6px;border-radius:3px;margin:-22px -22px 18px;
+    background:var(--biz);
+  }
+  .course.ongoing .cover{
+    background:linear-gradient(90deg,var(--ongoing),#B8732D);
+  }
+  .course h4{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+  .course .teacher{font-size:13px;color:var(--ink-2);margin-bottom:4px}
+  .course .meta{font-size:12px;color:var(--ink-3);margin-bottom:16px}
+  .progress{
+    height:6px;background:var(--bg-2);border-radius:3px;
+    margin-bottom:12px;overflow:hidden;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+  }
+  .progress span{
+    display:block;height:100%;
+    background:linear-gradient(90deg,var(--ongoing),#B8732D);
+    border-radius:3px;
+    box-shadow:0 1px 3px rgba(133,79,11,.3);
+  }
+  .course .foot{display:flex;justify-content:space-between;align-items:center}
+  .course .pct{font-size:12px;color:var(--ongoing);font-weight:600}
+  .enter{font-size:13px;color:var(--academy);font-weight:600;transition:gap .2s}
+  .enter:after{content:" →";transition:margin-left .2s}
+  .course:hover .enter:after{margin-left:4px}
+
+  .course.empty{
+    border:2px dashed var(--border);background:rgba(255,255,255,.4);
+    text-align:center;color:var(--ink-3);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:150px;box-shadow:none;
+    transition:all .25s;
+  }
+  .course.empty:hover{
+    border-color:var(--ink-3);background:rgba(255,255,255,.6);
+    transform:translateY(-2px);
+  }
+  .course.empty .plus{
+    font-size:32px;color:var(--ink-3);margin-bottom:6px;
+    text-shadow:0 1px 2px rgba(0,0,0,.06);
+  }
+
+  /* philosophy */
+  .philo{
+    background:linear-gradient(135deg,var(--academy-l) 0%,#F0EFFF 50%,var(--academy-l) 100%);
+    border-radius:var(--radius);
+    padding:40px;margin:48px 0;
+    border:1px solid rgba(60,52,137,.1);
+    box-shadow:var(--shadow-academy);
+    position:relative;overflow:hidden;
+  }
+  .philo::after{
+    content:"";position:absolute;top:-40px;right:-40px;
+    width:200px;height:200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(60,52,137,.06),transparent 70%);
+    pointer-events:none;
+  }
+  .philo h3{font-size:22px;font-weight:700;color:var(--academy);margin-bottom:18px}
+  .philo p{font-size:15px;color:var(--ink-2);margin-bottom:12px}
+  .philo .quote{
+    font-size:15px;color:var(--academy);font-style:italic;
+    border-left:3px solid var(--academy);padding-left:16px;
+    margin-top:18px;
+    background:rgba(255,255,255,.4);
+    padding:14px 16px;border-radius:0 10px 10px 0;
+    box-shadow:var(--shadow-sm);
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.015));
+  }
+  footer .line{margin-bottom:4px}
+
+  @media(max-width:640px){
+    .hero h1{font-size:34px}
+    .stats{gap:12px}
+    .stat{padding:18px 20px;min-width:100px}
+    .stat .n{font-size:30px}
+    .philo{padding:28px 20px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo"><span class="badge">R</span>Roy 私人学院</a>
+    <div class="links">
+      <a href="#business">商学院</a>
+      <a href="#mao">经典研读</a>
+      <a href="#interest">兴趣学习</a>
+      <a href="#philo">学习哲学</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="en">ROY'S PRIVATE ACADEMY</div>
+    <h1>Roy 私人学院</h1>
+    <div class="sub">把每一段学习沉淀成自己的资产</div>
+    <div class="stats">
+      <div class="stat"><div class="n">3</div><div class="l">学习区</div></div>
+      <div class="stat"><div class="n">11</div><div class="l">课程已完成</div></div>
+      <div class="stat"><div class="n">85</div><div class="l">章节</div></div>
+      <div class="stat"><div class="n">2175</div><div class="l">原始课件页</div></div>
+      <div class="stat"><div class="n">159</div><div class="l">毛选篇目已全部精读</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="business">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>商学院</h2>
+      <span class="tag">MBA / DBA 系列课程 · 把课件重新讲明白</span>
+    </div>
+
+    <div class="school biz">
+      <div class="school-head">
+        <div class="school-title">
+          <span class="dot"></span>
+          <h3>商学院</h3>
+          <span class="desc">宏观 · 战略 · 财务 · 组织</span>
+        </div>
+        <span class="school-count">11 门课程</span>
+      </div>
+      <div class="courses">
+        <a href="courses/macro-economics.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,var(--done),#5a9e35)"></div>
+          <h4>中国宏观经济学</h4>
+          <div class="teacher">华民 教授 · 复旦大学世界经济研究所</div>
+          <div class="meta">7 章节 + 引子 · 443 张幻灯片 · DBA 课程</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--done),#5a9e35)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--done)">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/marketing-strategy.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,var(--mkt),#0a9e72)"></div>
+          <h4>营销战略</h4>
+          <div class="teacher">吕巍 教授 · 上海交通大学安泰经管学院</div>
+          <div class="meta">6 章节 · 270 页讲义 + 5 个案例 · DBA 课程</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--mkt),#0a9e72)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--mkt)">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/research-methods.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#9B2C5C,#7B1E47)"></div>
+          <h4>科学研究方法论</h4>
+          <div class="teacher">林作新 博士 · DBA 课程</div>
+          <div class="meta">8 章节 · 248 页课件 · 1 个贯穿全课研究范例</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#9B2C5C,#7B1E47)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#9B2C5C">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/finance.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#1E3A5F,#122845)"></div>
+          <h4>财务管理学</h4>
+          <div class="teacher">张鸣 教授 · 上海财经大学会计学院</div>
+          <div class="meta">8 章节 · 99 张幻灯片 + 补充材料 · DBA 402</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#1E3A5F,#122845)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#1E3A5F">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/finance-risk.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#92400E,#78350F)"></div>
+          <h4>金融风险管理</h4>
+          <div class="teacher">陈松男 教授 · 上海交通大学 · EU DBA 410</div>
+          <div class="meta">9 章讲义 + 6 个真实案例 · ~220 张幻灯片 · DBA 课程</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#92400E,#78350F)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#92400E">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/tax-planning.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#1B5E20,#0D3D14)"></div>
+          <h4>税务规划</h4>
+          <div class="teacher">喻景忠 教授 · 中南财经政法大学 · EU DBA</div>
+          <div class="meta">5 章讲义 + 3 个案例作业 · ~242 张幻灯片 · 18 种筹划方法</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#1B5E20,#0D3D14)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#1B5E20">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/strategy.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#0E7490,#155E75)"></div>
+          <h4>战略管理</h4>
+          <div class="teacher">黄丹 教授 · 上海交通大学安泰经管学院 · 副院长</div>
+          <div class="meta">3 章讲义 + 2 个案例作业 · ~44 张幻灯片 · 8 本参考书目</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#0E7490,#155E75)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#0E7490">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/operations.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#C2410C,#9A3412)"></div>
+          <h4>运营管理</h4>
+          <div class="teacher">任建标 教授 · 上海交通大学安泰经管学院 · EMBA项目主任</div>
+          <div class="meta">4 章讲义 + 2 个案例作业 · 161页讲义 + 115张PPT · 5 本参考书目</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#C2410C,#9A3412)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#C2410C">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/project-mgmt.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#475569,#334155)"></div>
+          <h4>项目管理</h4>
+          <div class="teacher">丁荣贵 教授 · 山东大学管理学院 · 项目管理研究所所长</div>
+          <div class="meta">6 章讲义 + 1 个案例作业 · 110页讲义 · 4 本参考书目 · DBA 407</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#475569,#334155)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#475569">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/game-theory.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#7C3AED,#6D28D9)"></div>
+          <h4>经济博弈论</h4>
+          <div class="teacher">谢富纪 教授 · EU DBA 学位课程</div>
+          <div class="meta">7 章讲义 + 1 个案例作业 · 21页材料 · 智猪博弈专题</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#7C3AED,#6D28D9)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#7C3AED">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+        <a href="courses/ibm-pm.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#991B1B,#7F1D1D)"></div>
+          <h4>IBM项目管理</h4>
+          <div class="teacher">IBM 上海项目经理培训 · 企业内训课程</div>
+          <div class="meta">7 章节 · 189 张幻灯片 + 5份文档 · 70道互动测验题</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,#991B1B,#7F1D1D)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:#991B1B">✓ 已完成</span>
+            <span class="enter">进入课程</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mao">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>经典研读</h2>
+      <span class="tag">《毛泽东选集》四卷逐篇精读 · 全四卷 159 篇收官 · 自包含子站点，手机可离线阅读</span>
+    </div>
+
+    <div class="school mao">
+      <div class="school-head">
+        <div class="school-title">
+          <span class="dot"></span>
+          <h3>《毛泽东选集》研读</h3>
+          <span class="desc">1925.12 — 1949.9 · 阶级分析 → 战略 → 思想方法 → 建国方略</span>
+        </div>
+        <span class="school-count">4 卷 · 159 篇 · 全部收官</span>
+      </div>
+      <div class="courses">
+        <a href="mao/vol1.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,var(--mao),#7F1D1D)"></div>
+          <h4>第一卷 · 阶级分析与武装割据</h4>
+          <div class="teacher">1925.12 — 1937.8 · 两次国内革命战争时期</div>
+          <div class="meta">18 篇 · 含《实践论》《矛盾论》方法论总纲</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--done),#5a9e35)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--done)">✓ 已收官 18/18</span>
+            <span class="enter">进入卷一</span>
+          </div>
+        </a>
+        <a href="mao/vol2.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#7F1D1D,#5B1414)"></div>
+          <h4>第二卷 · 持久战与统一战线</h4>
+          <div class="teacher">1937.7 — 1941.5 · 抗日战争前期</div>
+          <div class="meta">40 篇 · 核心是《论持久战》《新民主主义论》</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--done),#5a9e35)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--done)">✓ 已收官 40/40</span>
+            <span class="enter">进入卷二</span>
+          </div>
+        </a>
+        <a href="mao/vol3.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#5B1414,#3F0D0D)"></div>
+          <h4>第三卷 · 整风与实事求是</h4>
+          <div class="teacher">1941.3 — 1945.8 · 抗日战争后期</div>
+          <div class="meta">31 篇 · 整风三篇、群众路线、《论联合政府》</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--done),#5a9e35)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--done)">✓ 已收官 31/31</span>
+            <span class="enter">进入卷三</span>
+          </div>
+        </a>
+        <a href="mao/vol4.html" class="course done">
+          <div class="cover" style="background:linear-gradient(90deg,#7F1D1D,#9E2B25)"></div>
+          <h4>第四卷 · 战略决战与建国方略</h4>
+          <div class="teacher">1945.8 — 1949.9 · 解放战争时期</div>
+          <div class="meta">70 篇 · 十大军事原则、《论人民民主专政》等</div>
+          <div class="progress"><span style="width:100%;background:linear-gradient(90deg,var(--done),#5a9e35)"></span></div>
+          <div class="foot">
+            <span class="pct" style="color:var(--done)">✓ 已收官 70/70</span>
+            <span class="enter">进入卷四</span>
+          </div>
+        </a>
+      </div>
+      <p style="margin-top:20px;font-size:13.5px;color:var(--ink-2);line-height:1.75;">
+        每篇笔记八个固定模块：<b>原文 · 关键词扫盲 · 历史背景 · 逐段精读 · 逻辑结构 · 金句 · 深度思考 · 延伸阅读</b>，
+        并带高亮批注与续读记忆。<b>全四卷 159 篇已于 2026.10 全部精读收官</b>（第一卷 18 + 第二卷 40 + 第三卷 31 + 第四卷 70）。
+        <b>本板块是独立子站点</b>（private college/mao），与单独的毛选频道内容已合并，发布到手机时随学院一起上传，装好后离线也能读。
+        <a href="mao/index.html" style="color:var(--mao);font-weight:600;">进入研读工作台 →</a>　
+        <a href="mao/timeline.html" style="color:var(--mao);font-weight:600;">历史年表 →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="interest">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>兴趣学习区</h2>
+      <span class="tag">随时加入的任意主题 · 不限于商科</span>
+    </div>
+
+    <div class="school interest">
+      <div class="school-head">
+        <div class="school-title">
+          <span class="dot"></span>
+          <h3>兴趣学习区</h3>
+          <span class="desc">英语 · 历史 · 科学 · 任意感兴趣的领域</span>
+        </div>
+        <span class="school-count">0 门课程</span>
+      </div>
+      <div class="courses">
+        <div class="course empty">
+          <div class="plus">+</div>
+          <div>这里放你随时想学的东西</div>
+          <div style="font-size:12px;margin-top:4px">一本书、一门课、一个话题都可以</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="philo">
+  <div class="wrap">
+    <div class="philo">
+      <h3>这个学院怎么用</h3>
+      <p><b>1. 课件重新讲明白。</b>每门课都从原始 PPT 出发，把当年没吃透、如今记不清的知识点逐个展开，用大白话讲清楚来龙去脉。</p>
+      <p><b>2. 五个模块统一体验。</b>每章学习页都包含：原文要点 / 知识点精讲 / 概念卡片 / 关键金句 / 复习或互动测验。不管什么课，结构一致，复习顺手。</p>
+      <p><b>3. 可随时扩展。</b>商学院可以继续加课，兴趣学习区可以放任何主题——一本书、一门公开课、一个聊天里冒出来的问题，都能建一门"课"沉淀下来。</p>
+      <p><b>4. 沉淀成资产。</b>学过的东西不复用就忘，这里让每个知识点都有处可查、有迹可循。</p>
+      <div class="quote">读懂世界才能读懂中国，只有站在世界经济的高山之巅，才能一览众山小。<br>—— 华民</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="line">Roy 私人学院 · 个人终身学习平台</div>
+    <div class="line">已完成课程：华民教授《中国宏观经济学》· 吕巍教授《营销战略》· 林作新博士《科学研究方法论》· 张鸣教授《财务管理学》· 陈松男教授《金融风险管理》· 喻景忠教授《税务规划》· 黄丹教授《战略管理》· 任建标教授《运营管理》· 丁荣贵教授《项目管理》· 谢富纪教授《经济博弈论》· IBM项目管理培训</div>
+    <div class="line">经典研读：《毛泽东选集》四卷逐篇精读 · 全四卷 159/159 全部收官（第一卷 18/18、第二卷 40/40、第三卷 31/31、第四卷 70/70）</div>
+  </div>
+</footer>
+
+</body>
+</html>
